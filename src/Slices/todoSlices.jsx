@@ -35,6 +35,20 @@ const todoSlices = createSlice({
         );
       }
     },
+    updateTodo: (state, action) => {
+      const todoList = localStorage.getItem("todoList");
+      if (todoList) {
+        let todoListArr = JSON.parse(todoList);
+        todoListArr.forEach((todo, index) => {
+          if (todo.id === action.payload.id) {
+            todo.title = action.payload.title;
+            todo.status = action.payload.status;
+          }
+        });
+        localStorage.setItem("todoList", JSON.stringify(todoListArr));
+        state.todolist = todoListArr;
+      }
+    },
     deleteTodo: (state, action) => {
       const todoList = localStorage.getItem("todoList");
       if (todoList) {
@@ -52,5 +66,5 @@ const todoSlices = createSlice({
   },
 });
 
-export const { addTodo, deleteTodo } = todoSlices.actions;
+export const { addTodo, deleteTodo, updateTodo } = todoSlices.actions;
 export default todoSlices.reducer;

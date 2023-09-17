@@ -1,35 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import styles from "../styles/modules/modal.module.scss";
 import Button from "./Button";
 import { useDispatch } from "react-redux";
-import { addTodo } from "../Slices/todoSlices";
+import { addTodo, updateTodo } from "../Slices/todoSlices";
 import { v4 as uuid } from "uuid";
 import toast from "react-hot-toast";
 
-const TodoModal = ({ modalOpen, setModalOpen, type }) => {
+const TodoModal = ({ modalOpen, setModalOpen, type, todo }) => {
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("inComplete");
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (type === "update" && todo) {
+      setTitle(todo.title);
+      setStatus(todo.status);
+    } else {
+      setTitle("");
+      setStatus("inComplete");
+    }
+  }, [todo, type, modalOpen]);
+
   const submitHandler = (e) => {
     e.preventDefault();
+    if (title === "") {
+      toast.error("please enter a title");
+      return;
+    }
+
     if (title && status) {
-      dispatch(
-        addTodo({
-          id: uuid(),
-          title: title,
-          status: status,
-          time: new Date().toLocaleString(),
-        })
-      );
-      toast.success("todo added successfully!!");
-      setTitle("");
+      if (type === "add") {
+        dispatch(
+          addTodo({
+            id: uuid(),
+            title: title,
+            status: status,
+            time: new Date().toLocaleString(),
+          })
+        );
+        toast.success("todo added successfully!!");
+        setTitle("");
+      }
+      if (type === "update") {
+        if (todo.title !== title || todo.status !== status) {
+          dispatch(
+            updateTodo({
+              ...todo,
+              title: title,
+              status: status,
+            })
+          );
+        } else {
+          toast.error("No changes were made");
+        }
+      }
       setTimeout(() => {
         setModalOpen(false);
-      }, [1000]);
-    } else {
-      toast.error("Title fields are required!!");
+      }, [100]);
     }
   };
   return (
