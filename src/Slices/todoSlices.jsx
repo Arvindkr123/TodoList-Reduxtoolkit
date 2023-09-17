@@ -35,8 +35,22 @@ const todoSlices = createSlice({
         );
       }
     },
+    deleteTodo: (state, action) => {
+      const todoList = localStorage.getItem("todoList");
+      if (todoList) {
+        const todoListArr = JSON.parse(todoList);
+        todoListArr.forEach((todo, index) => {
+          if (todo.id === action.payload) {
+            todoListArr.splice(index, 1);
+          }
+        });
+        // store in the local storage
+        localStorage.setItem("todoList", JSON.stringify(todoListArr));
+        state.todolist = todoListArr;
+      }
+    },
   },
 });
 
-export const { addTodo } = todoSlices.actions;
+export const { addTodo, deleteTodo } = todoSlices.actions;
 export default todoSlices.reducer;

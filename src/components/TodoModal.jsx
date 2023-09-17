@@ -7,7 +7,7 @@ import { addTodo } from "../Slices/todoSlices";
 import { v4 as uuid } from "uuid";
 import toast from "react-hot-toast";
 
-const TodoModal = ({ modalOpen, setModalOpen }) => {
+const TodoModal = ({ modalOpen, setModalOpen, type }) => {
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("inComplete");
   const dispatch = useDispatch();
@@ -48,7 +48,9 @@ const TodoModal = ({ modalOpen, setModalOpen }) => {
                 <MdOutlineClose />
               </div>
               <form className={styles.form} onSubmit={submitHandler}>
-                <h1 className={styles.formTitle}>Add Task</h1>
+                <h1 className={styles.formTitle}>
+                  {type === "update" ? "Update" : "Add"} Task
+                </h1>
                 <label htmlFor="title">
                   Title
                   <input
@@ -71,7 +73,7 @@ const TodoModal = ({ modalOpen, setModalOpen }) => {
                 </label>
                 <div className={styles.buttonContainer}>
                   <Button type={"submit"} variant="primary">
-                    Add Task
+                    {type === "update" ? "Update" : "Add"} Task
                   </Button>
                   <Button
                     type={"button"}

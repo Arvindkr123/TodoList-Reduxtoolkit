@@ -1,15 +1,18 @@
 import React from "react";
 import styles from "../styles/modules/todoItem.module.scss";
 import { getClasses } from "../utils/getClasses";
-import { compareAsc, format } from "date-fns";
 import { MdDelete, MdEdit } from "react-icons/md";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { deleteTodo } from "../Slices/todoSlices";
 
 const TodoItem = ({ todo }) => {
   const { id, title, status, time } = todo;
+  const dispatch = useDispatch();
 
-  const handleDelete = () => {
-    toast.success("Delete Called successfully");
+  const handleDelete = (id) => {
+    dispatch(deleteTodo(id));
+    toast.success("Delete todo successfully");
   };
   const handleUpdate = () => {
     toast.success("Edit Called successfully");
@@ -34,7 +37,7 @@ const TodoItem = ({ todo }) => {
       <div className={styles.todoActions}>
         <div
           className={styles.icon}
-          onClick={handleDelete}
+          onClick={() => handleDelete(id)}
           role="button"
           tabIndex={0}
         >
@@ -54,3 +57,4 @@ const TodoItem = ({ todo }) => {
 };
 
 export default TodoItem;
+    
