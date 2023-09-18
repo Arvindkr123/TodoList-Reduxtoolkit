@@ -3,4 +3,5 @@ import AppHeader from "./AppHeader";
 import Button from "./Button";
 import AppContent from "./AppContent";
 import TodoModal from "./TodoModal";
-export { PageTitle, AppHeader, Button, AppContent, TodoModal };
+import CheckButton from "./CheckButton";
+export { PageTitle, AppHeader, Button, AppContent, TodoModal, CheckButton };
