@@ -12,6 +12,7 @@ const getLocalTodolist = () => {
 
 const initialState = {
   todolist: getLocalTodolist(),
+  filterStatus: "all",
 };
 
 const todoSlices = createSlice({
@@ -63,8 +64,12 @@ const todoSlices = createSlice({
         state.todolist = todoListArr;
       }
     },
+    updateFilterStatus: (state, action) => {
+      state.filterStatus = action.payload;
+    },
   },
 });
 
-export const { addTodo, deleteTodo, updateTodo } = todoSlices.actions;
+export const { addTodo, deleteTodo, updateTodo, updateFilterStatus } =
+  todoSlices.actions;
 export default todoSlices.reducer;
